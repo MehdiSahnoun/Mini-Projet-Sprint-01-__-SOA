@@ -1,0 +1,41 @@
+<div class="app-shell">
+  <header class="topbar">
+    <a class="brand" routerLink="/accueil" aria-label="Accueil — Maison des musées">
+      <span class="brand-mark">M</span>
+      <span class="brand-name">maison<span>des musées</span></span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a routerLink="/accueil" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
+      <a routerLink="/musees" routerLinkActive="active">Musées</a>
+      <a routerLink="/oeuvres" routerLinkActive="active">Œuvres</a>
+    </nav>
+
+    <a *ngIf="auth.isAdmin()" class="nav-action" routerLink="/musees/new">+ Ajouter un musée</a>
+
+    <div class="account-menu">
+      <ng-container *ngIf="auth.isLoggedIn(); else guestActions">
+        <div class="account-details">
+          <span class="account-avatar" aria-hidden="true">{{ auth.currentUser()?.charAt(0)?.toUpperCase() }}</span>
+          <span class="account-copy">
+            <strong>{{ auth.currentUser() }}</strong>
+            <small>{{ auth.isAdmin() ? 'Administrateur' : 'Lecture seule' }}</small>
+          </span>
+        </div>
+        <button class="logout-button" type="button" (click)="logout()">Déconnexion</button>
+      </ng-container>
+      <ng-template #guestActions>
+        <a class="login-link" routerLink="/login">Connexion</a>
+      </ng-template>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <router-outlet />
+  </main>
+
+  <footer class="site-footer">
+    <span>Maison des musées</span>
+    <span>Préserver, partager, transmettre.</span>
+  </footer>
+</div>
